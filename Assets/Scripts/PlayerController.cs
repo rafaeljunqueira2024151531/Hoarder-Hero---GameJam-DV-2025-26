@@ -27,7 +27,7 @@ public class PlayerController : MonoBehaviour {
         audioS = GetComponent<AudioSource>();
     }
 
-   void Update() {
+    void Update() {
         if (UIManager.instance.jogoAcabou || Time.timeScale == 0) {
             rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
             if (anim != null) anim.SetBool("isRunning", false);
@@ -35,8 +35,9 @@ public class PlayerController : MonoBehaviour {
         }
 
         noChao = Physics2D.OverlapArea(ponto1.position, ponto2.position, groundLayer);
+        
         float currentSpeed = Mathf.Max(2f, baseSpeed - (coins * penalty));
-        float currentJump = Mathf.Max(4f, baseJump - (coins * 0.3f));
+        float currentJump = Mathf.Max(4f, baseJump - (coins * 0.2f));
         float move = Input.GetAxisRaw("Horizontal");
 
         rb.linearVelocity = new Vector2(move * currentSpeed, rb.linearVelocity.y);
@@ -52,11 +53,6 @@ public class PlayerController : MonoBehaviour {
             anim.SetBool("isGrounded", noChao);
             anim.SetFloat("yVelocity", rb.linearVelocity.y);
         }
-
-        if (Input.GetKeyDown(KeyCode.Q) && coins > 0) {
-            coins--;
-            UIManager.instance.AtualizarMoedasUI(coins);
-        }
     }
 
     public void GetCoin() {
@@ -65,13 +61,8 @@ public class PlayerController : MonoBehaviour {
         if (somMoeda) audioS.PlayOneShot(somMoeda);
     }
 
-    public void TocarSomKill() {
-        if (somKill) audioS.PlayOneShot(somKill);
-    }
-
-    public void TocarSomPause() {
-        if (somPause) audioS.PlayOneShot(somPause);
-    }
+    public void TocarSomKill() { if (somKill) audioS.PlayOneShot(somKill); }
+    public void TocarSomPause() { if (somPause) audioS.PlayOneShot(somPause); }
 
     public void Ganhar() {
         if (UIManager.instance.jogoAcabou) return;

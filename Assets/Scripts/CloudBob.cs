@@ -4,7 +4,7 @@ public class CloudBob : MonoBehaviour
 {
     public float amplitude = 0.2f;
     public float speed = 0.5f;
-    public float offsetX = 0f;  // muda em cada nuvem para não sincronizarem
+    public float offsetX = 0f;
 
     private Vector3 startPos;
 

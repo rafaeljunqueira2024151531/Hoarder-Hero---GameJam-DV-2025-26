@@ -17,6 +17,8 @@ public class UIManager : MonoBehaviour {
 
     void Awake() {
         instance = this;
+        Time.timeScale = 1f;
+        jogoAcabou = false;
     }
 
     void Update() {
@@ -31,17 +33,23 @@ public class UIManager : MonoBehaviour {
 
         if (tempoRestante > 0) {
             tempoRestante -= Time.deltaTime;
-            int minutos = Mathf.FloorToInt(tempoRestante / 60);
-            int segundos = Mathf.FloorToInt(tempoRestante % 60);
+            
+            float tempoParaMostrar = Mathf.Max(0, tempoRestante);
+            int minutos = Mathf.FloorToInt(tempoParaMostrar / 60);
+            int segundos = Mathf.FloorToInt(tempoParaMostrar % 60);
             tempoText.text = string.Format("{0:00}:{1:00}", minutos, segundos);
         } else {
+            tempoRestante = 0;
+            tempoText.text = "00:00";
             ShowGameOver("TEMPO ESGOTADO!");
         }
     }
 
     public void Pausar() {
+        if (jogoAcabou) return;
         estaPausado = true;
-        FindAnyObjectByType<PlayerController>().TocarSomPause();
+        PlayerController p = FindFirstObjectByType<PlayerController>();
+        if (p != null) p.TocarSomPause();
         Time.timeScale = 0f;
         pausePanel.SetActive(true);
     }
@@ -57,16 +65,19 @@ public class UIManager : MonoBehaviour {
     }
 
     public void ShowVictory(int score) {
+        if (jogoAcabou) return;
         jogoAcabou = true;
+        Time.timeScale = 0f;
         victoryPanel.SetActive(true);
         finalScoreText.text = "Score Final: " + score;
     }
 
     public void ShowGameOver(string mensagem) {
+        if (jogoAcabou) return;
         jogoAcabou = true;
+        Time.timeScale = 0f;
         gameOverPanel.SetActive(true);
         gameOverTitleText.text = mensagem;
-        Time.timeScale = 0f;
     }
 
     public void Reiniciar() {
