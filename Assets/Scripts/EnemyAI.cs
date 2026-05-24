@@ -16,17 +16,28 @@ public class EnemyAI : MonoBehaviour {
     }
 
     void Update() {
-        if (player == null || UIManager.instance.jogoAcabou) {
-            rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
-            if(anim != null) anim.SetBool("isRunning", false);
-            return;
-        }
-
-        float direction = Mathf.Sign(player.position.x - transform.position.x);
-        rb.linearVelocity = new Vector2(direction * speed, rb.linearVelocity.y);
-        sr.flipX = direction <= 0;
-        if(anim != null) anim.SetBool("isRunning", true);
+    if (player == null || UIManager.instance.jogoAcabou) {
+        rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
+        if(anim != null) anim.SetBool("isRunning", false);
+        return;
     }
+
+    float distance = Mathf.Abs(player.position.x - transform.position.x);
+
+    if (distance < 0.2f)
+    {
+        rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
+        if (anim != null) anim.SetBool("isRunning", false);
+        return;
+    }
+
+    float direction = Mathf.Sign(player.position.x - transform.position.x);
+    rb.linearVelocity = new Vector2(direction * speed, rb.linearVelocity.y);
+
+    sr.flipX = direction <= 0;
+
+    if(anim != null) anim.SetBool("isRunning", true);
+    }   
 
     void OnCollisionEnter2D(Collision2D col) {
         if (col.gameObject.CompareTag("Player")) {
@@ -38,5 +49,10 @@ public class EnemyAI : MonoBehaviour {
                 pc.TakeDamage(5);
             }
         }
+    }
+
+    public void IncreaseSpeed(float amount)
+    {
+        speed += amount;
     }
 }
