@@ -9,7 +9,7 @@ public class FixedSpawner : MonoBehaviour {
     public int seed = 42; 
     public float startX = -10f;
     public float endX = 200f;
-    public float stepX = 2.5f;
+    public float stepX = 8f;
     public float spawnYOffset = 1f;
 
     void Start() {
@@ -28,7 +28,7 @@ public class FixedSpawner : MonoBehaviour {
                 if (chance < 0.3f) {
                     Instantiate(coinPrefab, spawnPos, Quaternion.identity);
                 } 
-                else if (chance > 0.85f) {
+                else if (chance > 0.95f) {
                     Instantiate(enemyPrefab, spawnPos + Vector3.up * 0.5f, Quaternion.identity);
                 }
             }

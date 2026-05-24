@@ -27,7 +27,7 @@ public class PlayerController : MonoBehaviour {
         audioS = GetComponent<AudioSource>();
     }
 
-    void Update() {
+   void Update() {
         if (UIManager.instance.jogoAcabou || Time.timeScale == 0) {
             rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
             if (anim != null) anim.SetBool("isRunning", false);
